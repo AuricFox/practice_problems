@@ -47,7 +47,7 @@ class Tree:
             
 
     def insert(self, value:int):
-        # Inserts our node into the binary search tree
+        # Inserts our value into the tree
         node = Node(value)
 
         # Check if the tree is empty
@@ -83,14 +83,18 @@ class Tree:
             else: break
 
     def delete(self, value:int):
+        # Deletes the value from the tree
 
         parent = None
         current = self.root
 
+        # Traverse the tree until a null branch is reached or our value is found
         while current and current.value != value:
             parent = current
+            # Our value is less, traverse left
             if value < current.vlaue:
                 current = current.left
+            # Our value is greater or equal, traverse right
             else:
                 current = current.right
 
@@ -99,22 +103,30 @@ class Tree:
 
         # Node to be deleted has one or no children
         if not current.left or not current.right:
+            # The current node has no left branches
             if not current.left:
                 child = current.right
+            # The current node has no right branches
             else:
                 child = current.left
 
+            # The deleted node is the root node
             if not parent:
                 self.root = child
+            # Set the child as the previous node's left branch
             elif parent.left == current:
                 parent.left = child
+            # Set the child as the previous node's right branch
             else:
                 parent.right = child
 
+        # Deleted node has two children
         else:
             successor = current.right
             successor_parent = current
 
+            # Traverse the right branch of the deleted node 
+            # for the node with the lowest value
             while successor.left:
                 successor_parent = successor
                 successor = successor.left
@@ -122,6 +134,7 @@ class Tree:
             # Replace the data of the node being deleted
             current.value = successor.value
 
+            # Remove the successor node from the tree since it was moved
             if successor_parent.left == successor:
                 successor_parent.left = successor.right
             else:
